@@ -1,6 +1,6 @@
 const productsModel = require('../models/productsModel');
 
-const verifyName = async (name) => {
+const verifyName = async (name, id) => {
   if (name.length < 5) {
     const error = {
       code: 'invalidData',
@@ -9,7 +9,7 @@ const verifyName = async (name) => {
     throw error;
   }
   const productName = await productsModel.getByName(name);
-  if (productName.some((product) => product === name)) {
+  if (!id && productName.some((product) => product === name)) {
     const error = {
       code: 'alreadyExists',
       message: 'Product already exists',
@@ -35,6 +35,21 @@ const create = async (name, quantity) => {
   return product;
 };
 
+const update = async (id, name, quantity) => {
+  await verifyName(name, id);
+  verifyQuantity(quantity);
+  const product = await productsModel.getById(id);  
+  if (!product) {
+    const error = {
+      code: 'notFound',
+      message: 'Product not found',
+    };
+    throw error;
+  }
+  const newProduct = await productsModel.update(id, name, quantity);
+  return newProduct;
+};
+
 const getAll = async () => {
   const products = await productsModel.getAll();
   return products;
@@ -56,4 +71,5 @@ module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
