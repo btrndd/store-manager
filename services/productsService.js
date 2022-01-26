@@ -31,10 +31,29 @@ const verifyQuantity = (quantity) => {
 const create = async (name, quantity) => {
   await verifyName(name);
   verifyQuantity(quantity);
-  const product = productsModel.create(name, quantity);
+  const product = await productsModel.create(name, quantity);
+  return product;
+};
+
+const getAll = async () => {
+  const products = await productsModel.getAll();
+  return products;
+};
+
+const getById = async (id) => {
+  const product = await productsModel.getById(id);  
+  if (!product) {
+    const error = {
+      code: 'notFound',
+      message: 'Product not found',
+    };
+    throw error;
+  }
   return product;
 };
 
 module.exports = {
   create,
+  getAll,
+  getById,
 };

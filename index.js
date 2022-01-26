@@ -16,25 +16,12 @@ app.get('/', (_request, response) => {
 
 app.post('/products', products.create);
 
-app.use((err, _req, res, next) => {
-  const errorMap = {
-    notFound: 404,
-    requiredParameter: 400,
-    invalidData: 422,
-    alreadyExists: 409,
+app.get('/products', products.getAll);
+app.get('/products/:id', products.getById);
 
-  };
-  const status = errorMap[err.code];
-  if (!status) {
-    return next(err);
-  }
-  res.status(status).json(err);
-});
+app.use(products.manageErrors);
 
-app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(500).json({ message: 'server error' });
-});
+app.use(products.serverError);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);

@@ -8,7 +8,6 @@ const connection = require('./connection');
 
 const getAll = async () => {
     const [rows] = await connection.execute('SELECT * FROM products');
-
     return rows;
 };
 
@@ -36,8 +35,18 @@ const getByName = async (name) => {
   return result;
 };
 
+const getById = async (id) => {
+  const [rows] = await connection.execute(
+    'SELECT * FROM products WHERE id = ?',
+    [id],
+  );
+  const product = rows[0];
+  return product;
+};
+
 module.exports = {
     getAll,
     create,
     getByName,
+    getById,
 };
