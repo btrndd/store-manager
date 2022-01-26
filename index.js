@@ -22,6 +22,8 @@ app.get('/products/:id', products.getById);
 
 app.put('/products/:id', products.update);
 
+app.delete('/products/:id', products.remove);
+
 app.use(products.manageErrors);
 
 app.use(products.serverError);

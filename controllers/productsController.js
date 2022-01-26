@@ -41,6 +41,12 @@ const update = rescue(async (req, res) => {
   res.status(200).json(product);
 });
 
+const remove = rescue(async (req, res) => {
+  const { id } = req.params;
+  const product = await productsService.remove(id);
+  res.status(200).json(product);
+});
+
 const getAll = rescue(async (_req, res) => {
   const products = await productsService.getAll();
   res.status(200).json(products);
@@ -75,6 +81,7 @@ const serverError = (err, _req, res, _next) => {
 module.exports = {
   create,
   update,
+  remove,
   getAll,
   getById,
   manageErrors,
