@@ -65,7 +65,7 @@ describe('Sales', () => {
   }
 
   describe('5 - Crie um endpoint para cadastrar vendas', () => {
-    it.skip('Será validado que não é possível cadastrar compras sem o campo `product_id`', async () => {
+    it('Será validado que não é possível cadastrar compras sem o campo `product_id`', async () => {
       let result;
       let resultProductId;
 
@@ -93,7 +93,7 @@ describe('Sales', () => {
         });
     });
 
-    it.skip('Será validado que não é possível cadastrar compras sem o campo `quantity`', async () => {
+    it('Será validado que não é possível cadastrar compras sem o campo `quantity`', async () => {
       let result;
       let resultProductId;
 
@@ -121,7 +121,7 @@ describe('Sales', () => {
         });
     });
 
-    it.skip('Será validado que não é possível cadastrar compras com quantidade menor que zero', async () => {
+    it('Será validado que não é possível cadastrar compras com quantidade menor que zero', async () => {
       let result;
       let resultProductId;
 
@@ -149,7 +149,7 @@ describe('Sales', () => {
         });
     });
 
-    it.skip('Será validado que não é possível cadastrar compras com quantidade igual a zero', async () => {
+    it('Será validado que não é possível cadastrar compras com quantidade igual a zero', async () => {
       let result;
       let resultProductId;
 
@@ -177,7 +177,7 @@ describe('Sales', () => {
         });
     });
 
-    it.skip('Será validado que não é possível cadastrar compras com uma string no campo quantidade', async () => {
+    it('Será validado que não é possível cadastrar compras com uma string no campo quantidade', async () => {
       let result;
       let resultProductId;
 

@@ -18,19 +18,21 @@ const salesModel = require('../models/salesModel');
 //   }
 // };
 
-// const verifyQuantity = (quantity) => {
-//   if (quantity < 1 || typeof quantity !== 'number') {
-//     const error = {
-//       code: 'invalidData',
-//       message: '"quantity" must be a number larger than or equal to 1',
-//     };
-//     throw error;
-//   }
-// };
+const verifyQuantity = (quantity) => {
+  if (quantity < 1 || typeof quantity !== 'number') {
+    const error = {
+      code: 'invalidData',
+      message: '"quantity" must be a number larger than or equal to 1',
+    };
+    throw error;
+  }
+};
 
 const create = async (sale) => {
   // await verifyName(name);
-  // verifyQuantity(quantity);
+  sale.forEach((product) => {
+    verifyQuantity(product.quantity);
+  });  
   const resultSale = await salesModel.create(sale);
   return resultSale;
 };
