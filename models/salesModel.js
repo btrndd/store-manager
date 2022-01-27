@@ -1,7 +1,12 @@
 const connection = require('./connection');
 
 const getAll = async () => {
-    const [rows] = await connection.execute('SELECT * FROM sales');
+    const query = (
+     `SELECT sales.id AS saleId, sales.date, sales_products.product_id, sales_products.quantity
+    FROM sales
+    INNER JOIN sales_products
+    ON sales.id = sales_products.sale_id`);
+    const [rows] = await connection.execute(query);
     return rows;
 };
 
@@ -19,14 +24,17 @@ const create = async (sale) => {
   return result;
 };
 
-// const getById = async (id) => {
-//   const [rows] = await connection.execute(
-//     'SELECT * FROM sales WHERE id = ?',
-//     [id],
-//   );
-//   const product = rows[0];
-//   return product;
-// };
+const getById = async (id) => {
+  const query = (
+    `SELECT sales.date, sales_products.product_id, sales_products.quantity
+    FROM sales
+    INNER JOIN sales_products
+    ON sales.id = sales_products.sale_id
+    WHERE sales.id = ?`);
+  const [rows] = await connection.execute(query, [id]);
+  const sales = rows;
+  return sales;
+};
 
 // const update = async (id, name, quantity) => {
 //   const query = 'UPDATE products SET name = ?, quantity = ? WHERE id = ?';
@@ -49,7 +57,7 @@ const create = async (sale) => {
 module.exports = {
     getAll,
     create,
-    // getById,
+    getById,
     // update,
     // remove,
 };

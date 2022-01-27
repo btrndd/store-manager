@@ -1,23 +1,5 @@
 const salesModel = require('../models/salesModel');
 
-// const verifyName = async (name, id) => {
-//   if (name.length < 5) {
-//     const error = {
-//       code: 'invalidData',
-//       message: '"name" length must be at least 5 characters long',
-//     };
-//     throw error;
-//   }
-//   const productName = await productsModel.getByName(name);
-//   if (!id && productName.some((product) => product === name)) {
-//     const error = {
-//       code: 'alreadyExists',
-//       message: 'Product already exists',
-//     };
-//     throw error;
-//   }
-// };
-
 const verifyQuantity = (quantity) => {
   if (quantity < 1 || typeof quantity !== 'number') {
     const error = {
@@ -28,8 +10,24 @@ const verifyQuantity = (quantity) => {
   }
 };
 
+const getAll = async () => {
+  const sales = await salesModel.getAll();
+  return sales;
+};
+
+const getById = async (id) => {
+  const sale = await salesModel.getById(id);  
+  if (!sale || sale.length === 0) {
+    const error = {
+      code: 'notFound',
+      message: 'Sale not found',
+    };
+    throw error;
+  }
+  return sale;
+};
+
 const create = async (sale) => {
-  // await verifyName(name);
   sale.forEach((product) => {
     verifyQuantity(product.quantity);
   });  
@@ -39,4 +37,6 @@ const create = async (sale) => {
 
 module.exports = {
   create,
+  getById,
+  getAll,
 };
