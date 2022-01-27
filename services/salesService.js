@@ -35,8 +35,23 @@ const create = async (sale) => {
   return resultSale;
 };
 
+const update = async (id, sale) => {
+  const getSale = await salesModel.getById(id);  
+  if (!getSale || getSale.length === 0) {
+    const error = {
+      code: 'notFound',
+      message: 'Sale not found',
+    };
+    throw error;
+  }
+  verifyQuantity(sale.quantity);
+  const updatedSale = await salesModel.update(id, sale);
+  return updatedSale;
+};
+
 module.exports = {
   create,
   getById,
   getAll,
+  update,
 };

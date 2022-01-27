@@ -36,16 +36,15 @@ const getById = async (id) => {
   return sales;
 };
 
-// const update = async (id, name, quantity) => {
-//   const query = 'UPDATE products SET name = ?, quantity = ? WHERE id = ?';
-//   await connection.execute(query, [name, quantity, id]);
-//   const product = {
-//     id,
-//     name,
-//     quantity,
-//   };
-//   return product;
-// };
+const update = async (id, sale) => {
+  const query = 'UPDATE sales_products SET quantity = ? WHERE product_id = ? AND sale_id = ?';
+  await connection.execute(query, [sale.quantity, sale.product_id, id]);
+  const saleUpdated = {
+    saleId: id,
+    itemUpdated: [sale],
+  };
+  return saleUpdated;
+};
 
 // const remove = async (id) => {
 //   const product = getById(id);
@@ -58,6 +57,6 @@ module.exports = {
     getAll,
     create,
     getById,
-    // update,
+    update,
     // remove,
 };

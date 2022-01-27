@@ -22,6 +22,27 @@ const create = rescue(async (req, res) => {
   res.status(201).json(resultSale);
 });
 
+const update = rescue(async (req, res) => {
+  const [sale] = req.body;
+  const { id } = req.params;
+    if (!sale.product_id) {
+      const error = {
+        code: 'requiredParameter',
+        message: '"product_id" is required',
+      };
+      throw error;
+    } 
+    if (!sale.quantity && sale.quantity !== 0) {
+      const error = {
+        code: 'requiredParameter',
+        message: '"quantity" is required',
+      };
+      throw error;
+    }
+  const updatedSale = await salesService.update(id, sale);
+  res.status(200).json(updatedSale);
+});
+
 const getAll = rescue(async (_req, res) => {
   const sales = await salesService.getAll();
   res.status(200).json(sales);
@@ -55,7 +76,7 @@ const serverError = (err, _req, res, _next) => {
 
 module.exports = {
   create,
-  // update,
+  update,
   // remove,
   getAll,
   getById,
