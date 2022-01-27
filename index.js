@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const productsRouter = require('./productsRouter');
+const salesRouter = require('./salesRouter');
 const products = require('./controllers/productsController');
 
 const app = express();
@@ -14,6 +15,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', productsRouter);
+
+app.use('/sales', salesRouter);
 
 app.use(products.manageErrors);
 

@@ -1,11 +1,5 @@
 const connection = require('./connection');
 
-// const serialize = (product) => ({
-//   id: product.id,
-//   name: product.name,
-//   quantity: product.quantity,
-// });
-
 const getAll = async () => {
     const [rows] = await connection.execute('SELECT * FROM products');
     return rows;
