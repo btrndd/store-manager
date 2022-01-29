@@ -46,17 +46,9 @@ const update = async (id, sale) => {
   return saleUpdated;
 };
 
-// const remove = async (id) => {
-//   const product = getById(id);
-//   const query = 'DELETE FROM products WHERE id = ?';
-//   await connection.execute(query, [id]);
-//   return product;
-// };
-
 module.exports = {
     getAll,
     create,
     getById,
     update,
-    // remove,
 };

@@ -29,4 +29,24 @@ CREATE TABLE sales_products (
         ON DELETE CASCADE
 )  ENGINE=INNODB;
 
+-- INSERT INTO products (name, quantity)
+-- VALUES
+--   ('Camiseta', 5),
+--   ('Bola', 6),
+--   ('Luva', 8),
+--   ('Gorro', '10');
+
+-- INSERT INTO sales (date)
+-- VALUES
+--   (NOW()),
+--   (NOW()),
+--   (NOW());
+  
+-- INSERT INTO sales_products (sale_id, product_id, quantity)
+-- VALUES
+--   (1, 4, 3),
+--   (2, 2, 1),
+--   (2, 1, 1),
+--   (3, 3, 2);
+
 SET SQL_SAFE_UPDATES = 0;
