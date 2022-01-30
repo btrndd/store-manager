@@ -257,4 +257,53 @@ describe('Testes da camada Service de Produtos', () => {
       });
     })
   })
+  describe('Removendo um produto', () => {
+    describe('Quando o produto é removido com sucesso', () => {
+      before(() => {
+        const product = {
+          id: 1,
+          name: 'Calça',
+          quantity: 5,
+        };
+        sinon.stub(productsModel, 'getByName').resolves([]);
+        sinon.stub(productsModel, 'getById').resolves(product);
+        sinon.stub(productsModel, 'create').resolves(product);
+        sinon.stub(productsModel, 'remove').resolves(product);
+      });
+
+      after(() => {
+        productsModel.getById.restore();
+        productsModel.getByName.restore();
+        productsModel.create.restore();
+        productsModel.remove.restore();
+      });
+      
+      it('retorna um objeto', async () => {
+        const body = {
+          id: 1,
+          name: 'Calça',
+          quantity: 5,
+        };
+        await productsService.create(body.name, body.quantity);
+        const result = await productsService.remove(body.id);
+        expect(result).to.be.an('object');       
+      });
+
+      it('o objeto possui as propriedades "id", "name", "quantity"', async () => {
+        const body = {
+          id: 1,
+          name: 'Calça',
+          quantity: 5,
+        };
+        await productsService.create(body.name, body.quantity);
+        const result = await productsService.remove(body.id);
+        expect(result).to.include.all.keys(
+          'id',
+          'name',
+          'quantity',
+        );        
+      });
+    })
+  })
 });
+
