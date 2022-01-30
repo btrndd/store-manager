@@ -3,7 +3,6 @@ const { expect } = require('chai');
 const productsModel = require('../../models/productsModel');
 const salesModel = require('../../models/salesModel');
 const connection = require('../../models/connection');
-const res = require('express/lib/response');
 
 describe('Testes da camada Model de Produtos', () => {
   describe('Buscando produtos no banco', () => {
