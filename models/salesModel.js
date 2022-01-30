@@ -13,10 +13,11 @@ const getAll = async () => {
 const create = async (sale) => {
   const querySales = 'INSERT INTO sales (date) VALUES (?)';
   const [resultSale] = await connection.execute(querySales, [new Date()]);
-  sale.forEach(async (product) => {
-    const query = ('INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)');
-    await connection.execute(query, [resultSale.insertId, product.product_id, product.quantity]);
-  });
+  const values = sale.map((product) => (
+    [resultSale.insertId, product.product_id, product.quantity]
+  ));
+  const query = ('INSERT INTO sales_products (sale_id, product_id, quantity) VALUES ?');
+  await connection.query(query, [values]);
   const result = {
     id: resultSale.insertId,
     itemsSold: sale,

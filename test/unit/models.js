@@ -193,7 +193,7 @@ describe('Testes da camada Model de Produtos', () => {
     })
   })
   describe('Atualizando um produto', () => {
-    describe('Quando o produto é criado com sucesso', () => {
+    describe('Quando o produto é atualizado com sucesso', () => {
       before(() => {
         const product = {
           id: 1,
@@ -218,7 +218,7 @@ describe('Testes da camada Model de Produtos', () => {
           quantity: 3,
         };
         await productsModel.create(body.name, body.quantity);
-        const result = await productsModel.create(body.id, body.name, newBody.quantity);
+        const result = await productsModel.update(body.id, body.name, newBody.quantity);
         expect(result).to.be.an('object');       
       });
 
@@ -392,7 +392,6 @@ describe('Testes da camada Model de Sales', () => {
       
       it('retorna um array', async () => {
         const result = await salesModel.getAll();
-        console.log(result);
         expect(result).to.be.an('array');       
       });
 
@@ -421,109 +420,118 @@ describe('Testes da camada Model de Sales', () => {
       });
     })
   
-  // describe('Criando um novo produto', () => {
-  //   describe('Quando o produto é criado com sucesso', () => {
-  //     before(() => {
-  //       const product = {
-  //         id: 1,
-  //         name: 'Calça',
-  //         quantity: 5,
-  //       };
-  //       sinon.stub(connection, 'execute').resolves([product]);
-  //     });
+  describe('Criando uma nova venda', () => {
+    describe('Quando a venda é criada com sucesso', () => {
+      before(() => {
+        const sale = [{
+          id: 1,
+          date: new Date(),
+        }];
+        const result = {
+          id: sale.id,
+          itemsSold: [
+            {
+              product_id: 1,
+              quantity: 2,
+            }
+          ]
+        };
+        sinon.stub(connection, 'execute').resolves([sale]);
+        sinon.stub(connection, 'query').resolves([result]);
+      });
 
-  //     after(() => {
-  //       connection.execute.restore([]);
-  //     });
+      after(() => {
+        connection.execute.restore([]);
+      });
       
-  //     it('retorna um objeto', async () => {
-  //       const body = {
-  //         name: 'Calça',
-  //         quantity: 5,
-  //       };
-  //       const result = await productsModel.create(body.name, body.quantity);
-  //       expect(result).to.be.an('object');       
-  //     });
+      it('retorna um objeto', async () => {
+        const body = [{
+          product_id: 1,
+          quantity: 2,
+        }];
+        const result = await salesModel.create(body);
+        expect(result).to.be.an('object');       
+      });
 
-  //     it('o objeto possui as propriedades "id", "name", "quantity"', async () => {
-  //       const body = {
-  //         name: 'Calça',
-  //         quantity: 5,
-  //       };
-  //       const result = await productsModel.create(body.name, body.quantity);
-  //       expect(result).to.include.all.keys(
-  //         'id',
-  //         'name',
-  //         'quantity',
-  //       );        
-  //     });
-  //   })
-  // })
-  // describe('Atualizando um produto', () => {
-  //   describe('Quando o produto é criado com sucesso', () => {
-  //     before(() => {
-  //       const product = {
-  //         id: 1,
-  //         name: 'Calça',
-  //         quantity: 5,
-  //       };
-  //       sinon.stub(connection, 'execute').resolves([product]);
-  //     });
+      it('o objeto possui as propriedades "id", "name", "quantity"', async () => {
+        const body = [{
+          product_id: 1,
+          quantity: 5,
+        }];
+        const result = await salesModel.create(body);
+        expect(result).to.include.all.keys(
+          'id',
+          'itemsSold',
+        );        
+      });
+    })
+  })
+  describe('Atualizando uma venda', () => {
+    describe('Quando a venda é atualizada com sucesso', () => {
+      before(() => {
+        const sale = [{
+          saleId: 1,
+          itemUpdated: [{
+            product_id: 1,
+            quantity: 5,
+          }],
+        }];
+        sinon.stub(connection, 'execute').resolves([sale]);
+      });
 
-  //     after(() => {
-  //       connection.execute.restore([]);
-  //     });
+      after(() => {
+        connection.execute.restore([]);
+      });
       
-  //     it('retorna um objeto', async () => {
-  //       const body = {
-  //         id: 1,
-  //         name: 'Calça',
-  //         quantity: 5,
-  //       };
-  //       const newBody = {
-  //         name: 'Calça',
-  //         quantity: 3,
-  //       };
-  //       await productsModel.create(body.name, body.quantity);
-  //       const result = await productsModel.create(body.id, body.name, newBody.quantity);
-  //       expect(result).to.be.an('object');       
-  //     });
+      it('retorna um objeto', async () => {
+        const body = [{
+          name: 'Calça',
+          quantity: 7,
+        }];
+        const newBody = {
+          product_id: 1,
+          quantity: 5,
+        };
+        await salesModel.create(body);
+        const result = await salesModel.update(1, newBody);
+        expect(result).to.be.an('object');       
+      });
 
-  //     it('o objeto possui as propriedades "id", "name", "quantity"', async () => {
-  //       const body = {
-  //         id: 1,
-  //         name: 'Calça',
-  //         quantity: 5,
-  //       };
-  //       const newBody = {
-  //         name: 'Calça',
-  //         quantity: 3,
-  //       };
-  //       await productsModel.create(body.name, body.quantity);
-  //       const result = await productsModel.update(body.id, body.name, newBody.quantity);
-  //       expect(result).to.include.all.keys(
-  //         'id',
-  //         'name',
-  //         'quantity',
-  //       );        
-  //     });
-  //     it('o objeto tem suas propridades alteradas com sucesso', async () => {
-  //       const body = {
-  //         id: 1,
-  //         name: 'Calça',
-  //         quantity: 5,
-  //       };
-  //       const newBody = {
-  //         id: 1,
-  //         name: 'Sapato',
-  //         quantity: 3,
-  //       };
-  //       await productsModel.create(body.name, body.quantity);
-  //       const result = await productsModel.update(newBody.id, newBody.name, newBody.quantity);
-  //       expect(result).to.deep.equal(newBody);
-  //     });
-  //   })
-  // })
+      it('o objeto possui as propriedades "id", "name", "quantity"', async () => {
+        const body = [{
+          name: 'Calça',
+          quantity: 7,
+        }];
+        const newBody = {
+          product_id: 1,
+          quantity: 5,
+        };
+        await salesModel.create(body);
+        const result = await salesModel.update(1, newBody);
+        expect(result).to.include.all.keys(
+          'saleId',
+          'itemUpdated',
+        );        
+      });
+      it('o objeto tem suas propridades alteradas com sucesso', async () => {
+        const body = [{
+          name: 'Calça',
+          quantity: 7,
+        }];
+        const newBody = {
+          product_id: 1,
+          quantity: 5,
+        };
+        const expectedResult = {
+          saleId: 1,
+          itemUpdated: [newBody],
+        };
+        await salesModel.create(body);
+        const result = await salesModel.update(1, newBody);
+        expect(result).to.deep.equal(expectedResult);
+      });
+    })
+  })
   // describe('Removendo um produto', () => {
   //   describe('Quando o produto é removido com sucesso', () => {
   //     before(() => {
