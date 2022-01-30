@@ -157,7 +157,103 @@ describe('Testes da camada Service de Produtos', () => {
           'id',
           'name',
           'quantity',
+        );
+      });
+    })
+    describe('Quando algum dado é inválido', () => {
+      before(() => {
+        sinon.stub(productsModel, 'getByName').resolves([]);
+        sinon.stub(productsModel, 'create').resolves(new Error());
+      });
+
+      after(() => {
+        productsModel.getByName.restore();
+        productsModel.create.restore();
+      });
+      
+      it('retorna um erro', async () => {
+        const body = {
+          name: 'Calça',
+          quantity: 5,
+        };
+        const result = await productsService.create(body.name, body.quantity);
+        expect(result).to.be.an('error');
+      });
+    })
+  })
+  describe('Atualizando um produto', () => {
+    describe('Quando o produto é atualizado com sucesso', () => {
+      before(() => {
+        const product = {
+          id: 1,
+          name: 'Calça',
+          quantity: 5,
+        };
+        const updatedProduct = {
+          id: 1,
+          name: 'Sapato',
+          quantity: 3,
+        };
+        sinon.stub(productsModel, 'getByName').resolves([]);
+        sinon.stub(productsModel, 'getById').resolves(product);
+        sinon.stub(productsModel, 'create').resolves(product);
+        sinon.stub(productsModel, 'update').resolves(updatedProduct);
+      });
+
+      after(() => {
+        productsModel.getById.restore();
+        productsModel.getByName.restore();
+        productsModel.create.restore();
+        productsModel.update.restore();
+      });
+      
+      it('retorna um objeto', async () => {
+        const body = {
+          id: 1,
+          name: 'Calça',
+          quantity: 5,
+        };
+        const newBody = {
+          name: 'Calça',
+          quantity: 3,
+        };
+        await productsService.create(body.name, body.quantity);
+        const result = await productsService.update(body.id, body.name, newBody.quantity);
+        expect(result).to.be.an('object');       
+      });
+
+      it('o objeto possui as propriedades "id", "name", "quantity"', async () => {
+        const body = {
+          id: 1,
+          name: 'Calça',
+          quantity: 5,
+        };
+        const newBody = {
+          name: 'Calça',
+          quantity: 3,
+        };
+        await productsService.create(body.name, body.quantity);
+        const result = await productsService.update(body.id, body.name, newBody.quantity);
+        expect(result).to.include.all.keys(
+          'id',
+          'name',
+          'quantity',
         );        
+      });
+      it('o objeto tem suas propridades alteradas com sucesso', async () => {
+        const body = {
+          id: 1,
+          name: 'Calça',
+          quantity: 5,
+        };
+        const newBody = {
+          id: 1,
+          name: 'Sapato',
+          quantity: 3,
+        };
+        await productsService.create(body.name, body.quantity);
+        const result = await productsService.update(newBody.id, newBody.name, newBody.quantity);
+        expect(result).to.deep.equal(newBody);
       });
     })
   })
